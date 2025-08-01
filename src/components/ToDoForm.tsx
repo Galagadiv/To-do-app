@@ -1,24 +1,25 @@
 "use client";
 
 import {useTasksList} from "@/context/TasksContext";
+import {refreshTasks} from "@/refreshTasks";
 import {useCallback, useState} from "react";
 
 export type TaskType = {
   id: string;
   title: string;
-  complited: boolean;
+  completed: boolean;
 };
 
 export default function ToDoForm() {
   const [taskName, setTaskName] = useState<string>("");
-  const {setTasksList} = useTasksList();
+  const {setAllTasks} = useTasksList();
 
   const addNewTask = (e: React.FormEvent) => {
     e.preventDefault();
     const newTask: TaskType = {
-      id: crypto.randomUUID(),
+      id: (Math.random() * 1000).toString(),
       title: taskName,
-      complited: false,
+      completed: false,
     };
 
     const taskList: TaskType[] = JSON.parse(
@@ -28,7 +29,7 @@ export default function ToDoForm() {
     const newList = JSON.stringify([...taskList, newTask]);
 
     localStorage.setItem("todos", newList);
-    setTasksList([...taskList, newTask]);
+    refreshTasks(setAllTasks);
     setTaskName("");
   };
 

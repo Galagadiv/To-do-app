@@ -3,25 +3,27 @@
 import {TaskType} from "@/components/ToDoForm";
 import {createContext, useContext, useEffect, useState} from "react";
 
-const TasksListContext = createContext<
-  | {
-      tasksList: TaskType[] | undefined;
-      setTasksList: React.Dispatch<
-        React.SetStateAction<TaskType[] | undefined>
-      >;
-    }
-  | undefined
->(undefined);
+type TasksContextType = {
+  allTasks: TaskType[];
+  setAllTasks: (tasks: TaskType[]) => void;
+  filter: number;
+  setFilter: (filter: number) => void;
+};
+
+const TasksListContext = createContext<TasksContextType | undefined>(undefined);
 
 export function TasksProvider({children}: {children: React.ReactNode}) {
-  const [tasksList, setTasksList] = useState<TaskType[] | undefined>();
+  const [allTasks, setAllTasks] = useState<TaskType[]>([]);
+  const [filter, setFilter] = useState<number>(2);
 
   useEffect(() => {
-    setTasksList(JSON.parse(localStorage.getItem("todos") || "[]"));
+    const data: TaskType[] = JSON.parse(localStorage.getItem("todos") || "[]");
+    setAllTasks(data);
   }, []);
-
   return (
-    <TasksListContext.Provider value={{tasksList, setTasksList}}>
+    <TasksListContext.Provider
+      value={{allTasks, setAllTasks, filter, setFilter}}
+    >
       {children}
     </TasksListContext.Provider>
   );
