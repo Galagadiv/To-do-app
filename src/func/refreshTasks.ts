@@ -1,6 +1,6 @@
 "use client";
 
-import {TaskType} from "./components/ToDoForm";
+import {TaskType} from "@/types/TaskType";
 
 export function refreshTasks(
   setAllTasks:

@@ -1,9 +1,9 @@
 "use client";
 
-import {TaskType} from "@/components/ToDoForm";
+import {TaskType} from "@/types/TaskType";
 import {createContext, useContext, useEffect, useState} from "react";
 
-type TasksContextType = {
+export type TasksContextType = {
   allTasks: TaskType[];
   setAllTasks: (tasks: TaskType[]) => void;
   filter: number;

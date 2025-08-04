@@ -11,21 +11,21 @@ export default function FilterBar() {
     <div className="flex p-[5px] border rounded">
       <button
         type="button"
-        className="flex-1 border-r cursor-pointer duration-300 hover:bg-[linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%)]"
+        className="flex-1 border-r cursor-pointer text-[0.8rem] sm:text-[1rem]"
         onClick={() => toggleButtons(2)}
       >
         Усі
       </button>
       <button
         type="button"
-        className="flex-1 border-r cursor-pointer"
+        className="flex-1 border-r cursor-pointer text-[0.8rem] sm:text-[1rem]"
         onClick={() => toggleButtons(1)}
       >
         Не завершені
       </button>
       <button
         type="button"
-        className="flex-1 cursor-pointer"
+        className="flex-1 cursor-pointer text-[0.8rem] sm:text-[1rem]"
         onClick={() => toggleButtons(0)}
       >
         Завершені

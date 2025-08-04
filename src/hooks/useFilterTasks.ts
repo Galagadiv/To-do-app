@@ -1,7 +1,7 @@
 "use client";
 
-import {TaskType} from "@/components/ToDoForm";
 import {useTasksList} from "@/context/TasksContext";
+import {TaskType} from "@/types/TaskType";
 
 export default function useFilterTasks(): TaskType[] {
   const {allTasks, filter} = useTasksList();

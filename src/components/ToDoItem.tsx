@@ -1,7 +1,8 @@
 import {useTasksList} from "@/context/TasksContext";
 import {useEffect, useState} from "react";
-import {TaskType} from "./ToDoForm";
-import {refreshTasks} from "@/refreshTasks";
+import {TaskType} from "@/types/TaskType";
+import {refreshTasks} from "@/func/refreshTasks";
+import debounce from "@/func/debounce";
 
 export default function ToDoItem({
   completed,
@@ -25,33 +26,30 @@ export default function ToDoItem({
     refreshTasks(setAllTasks);
   }, [completedState]);
 
-  const removeTask = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const removeTask = () => {
     const updatedTasks: TaskType[] = allTasks.filter((el) => el.id !== id);
 
     localStorage.setItem("todos", JSON.stringify(updatedTasks));
-
     refreshTasks(setAllTasks);
   };
 
   return (
-    <form
-      className="flex gap-[10px] items-center p-[10px]"
-      onSubmit={(e) => removeTask(e)}
-    >
+    <div className="flex gap-[10px] items-center p-[10px]">
       <label className="inline-flex items-center space-x-2 cursor-pointer">
         <input
           type="checkbox"
-          defaultChecked={completedState}
+          checked={completedState}
           onChange={() => setCompletedState((prev) => !prev)}
-          className="w-5 h-5 rounded border border-gray-400 flex items-center justify-center transition"
+          className="w-5 h-5 rounded border border-gray-400 flex items-center justify-center cursor-pointer hover:outline-none hover:ring-2 hover:ring-white-500"
         />
       </label>
-      <h2 className="text-[25px]/[1]">{title}</h2>
+      <p className="text-[1rem]/[1] sm:text-[1.5rem]/[1] overflow-hidden text-ellipsis">
+        {title}
+      </p>
       <button
-        type="submit"
-        className="border rounded w-auto h-full p-[5px] ml-auto"
+        type="button"
+        onClick={removeTask}
+        className="border rounded w-auto h-full p-[5px] ml-auto cursor-pointer hover:outline-none hover:ring-2 hover:ring-white-500"
       >
         <svg
           width="14"
@@ -100,6 +98,6 @@ export default function ToDoItem({
           </defs>
         </svg>
       </button>
-    </form>
+    </div>
   );
 }
