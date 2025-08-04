@@ -13,24 +13,14 @@ export default function ToDoItem({
   completed: boolean;
   title: string;
 }) {
-  const {allTasks, setAllTasks} = useTasksList();
-  const [completedState, setCompletedState] = useState<boolean>(completed);
+  const {task, dispatch} = useTasksList();
 
-  useEffect(() => {
-    const updatedTasks: TaskType[] = allTasks.map((task) =>
-      task.id === id ? {...task, completed: completedState} : task
-    );
-
-    localStorage.setItem("todos", JSON.stringify(updatedTasks));
-
-    refreshTasks(setAllTasks);
-  }, [completedState]);
+  const changeTaskState = () => {
+    dispatch({type: "CHANGE_STATE", id: id});
+  };
 
   const removeTask = () => {
-    const updatedTasks: TaskType[] = allTasks.filter((el) => el.id !== id);
-
-    localStorage.setItem("todos", JSON.stringify(updatedTasks));
-    refreshTasks(setAllTasks);
+    dispatch({type: "REMOVE_TASK", id: id});
   };
 
   return (
@@ -38,8 +28,8 @@ export default function ToDoItem({
       <label className="inline-flex items-center space-x-2 cursor-pointer">
         <input
           type="checkbox"
-          checked={completedState}
-          onChange={() => setCompletedState((prev) => !prev)}
+          checked={completed}
+          onChange={changeTaskState}
           className="w-5 h-5 rounded border border-gray-400 flex items-center justify-center cursor-pointer hover:outline-none hover:ring-2 hover:ring-white-500"
         />
       </label>

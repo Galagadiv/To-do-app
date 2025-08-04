@@ -4,7 +4,7 @@ import FilterBar from "@/components/FilterBar";
 import NavBar from "@/components/NavBar";
 import ToDoForm from "@/components/ToDoForm";
 import ToDoItem from "@/components/ToDoItem";
-import useFilterTasks from "@/hooks/useFilterTasks";
+import filterTasks from "@/func/filterTasks";
 
 export default function Home() {
   // localStorage.clear();
@@ -18,7 +18,7 @@ export default function Home() {
         <ToDoForm />
         <FilterBar />
         <ul className="p-[5px] border rounded">
-          {useFilterTasks()?.map((el) => (
+          {filterTasks()?.map((el) => (
             <li key={el.id} className="not-last:border-b">
               <ToDoItem id={el.id} completed={el.completed} title={el.title} />
             </li>

@@ -1,35 +1,30 @@
 "use client";
 
 import {useTasksList} from "@/context/TasksContext";
-import {refreshTasks} from "@/func/refreshTasks";
 import {TaskTheme, TaskType} from "@/types/TaskType";
 import {useState} from "react";
 
 export default function ToDoForm() {
   const [taskName, setTaskName] = useState<string>("");
   const [taskTheme, setTaskTheme] = useState<TaskTheme>("any");
-  const {setAllTasks} = useTasksList();
+  const {dispatch} = useTasksList();
 
   const addNewTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (taskName.trim().length == 0) return;
 
+    let id =
+      Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
+
     const newTask: TaskType = {
-      id: (Math.random() * 1000).toString(),
+      id: id,
       title: taskName,
       completed: false,
       theme: taskTheme,
     };
 
-    const taskList: TaskType[] = JSON.parse(
-      localStorage.getItem("todos") || "[]"
-    );
-
-    const newList = JSON.stringify([...taskList, newTask]);
-
-    localStorage.setItem("todos", newList);
-    refreshTasks(setAllTasks);
+    dispatch({type: "ADD_TASK", data: newTask});
     setTaskName("");
   };
 
@@ -57,6 +52,7 @@ export default function ToDoForm() {
                border bg-black text-white rounded h-full
                p-[5px] pr-10 cursor-pointer
                focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
+          onChange={() => setTaskTheme}
         >
           <option value="any">Усі</option>
           <option value="personal">Особисте</option>

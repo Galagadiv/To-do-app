@@ -3,7 +3,7 @@
 import FilterBar from "@/components/FilterBar";
 import ToDoForm from "@/components/ToDoForm";
 import ToDoItem from "@/components/ToDoItem";
-import useFilterTasks from "@/hooks/useFilterTasks";
+import useFilterTasks from "@/hooks/filterTasks";
 
 export default function Home() {
   // localStorage.clear();
