@@ -2,9 +2,8 @@
 
 import FilterBar from "@/components/FilterBar";
 import NavBar from "@/components/NavBar";
+import TaskList from "@/components/TaskList";
 import ToDoForm from "@/components/ToDoForm";
-import ToDoItem from "@/components/ToDoItem";
-import filterTasks from "@/func/filterTasks";
 
 export default function Home() {
   // localStorage.clear();
@@ -17,13 +16,7 @@ export default function Home() {
       <main className="flex flex-col w-full w-[90%] sm:w-[80%] mt-[20px] mx-auto gap-[10px]">
         <ToDoForm />
         <FilterBar />
-        <ul className="p-[5px] border rounded">
-          {filterTasks()?.map((el) => (
-            <li key={el.id} className="not-last:border-b">
-              <ToDoItem id={el.id} completed={el.completed} title={el.title} />
-            </li>
-          ))}
-        </ul>
+        <TaskList />
       </main>
     </>
   );

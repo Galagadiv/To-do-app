@@ -1,29 +1,26 @@
 "use client";
 
 import {TaskType} from "@/types/TaskType";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, {createContext, useContext, useEffect, useReducer} from "react";
 
 export type TasksContextType = {
   task: TaskType[];
-  dispatch: React.Dispatch<ActionType>;
-  filter: number;
-  setFilter: (filter: number) => void;
+  dispatch: React.Dispatch<TaskActionType>;
 };
 
-export type ActionType =
+export type TaskActionType =
   | {type: "ADD_DATA"; data: TaskType[]}
   | {type: "ADD_TASK"; data: TaskType}
   | {type: "CHANGE_STATE"; id: string}
+  | {
+      type: "CHANGE_TASK_THEME";
+      id: string;
+      theme: "any" | "personal" | "work" | "study";
+    }
   | {type: "REMOVE_TASK"; id: string}
   | {type: "CHANGE_TASK_TITLE"; id: string; title: string};
 
-function reducer(state: TaskType[], action: ActionType): TaskType[] {
+function taskReducer(state: TaskType[], action: TaskActionType): TaskType[] {
   let newList: TaskType[] = [];
 
   switch (action.type) {
@@ -36,6 +33,11 @@ function reducer(state: TaskType[], action: ActionType): TaskType[] {
     case "CHANGE_STATE":
       newList = state.map((el) =>
         el.id === action.id ? {...el, completed: !el.completed} : el
+      );
+      break;
+    case "CHANGE_TASK_THEME":
+      newList = state.map((el) =>
+        el.id === action.id ? {...el, theme: action.theme} : el
       );
       break;
     case "REMOVE_TASK":
@@ -58,15 +60,14 @@ function reducer(state: TaskType[], action: ActionType): TaskType[] {
 const TasksListContext = createContext<TasksContextType | undefined>(undefined);
 
 export function TasksProvider({children}: {children: React.ReactNode}) {
-  const [task, dispatch] = useReducer(reducer, []);
-  const [filter, setFilter] = useState<number>(2);
+  const [task, dispatch] = useReducer(taskReducer, []);
 
   useEffect(() => {
     const data: TaskType[] = JSON.parse(localStorage.getItem("todos") || "[]");
     dispatch({type: "ADD_DATA", data: data});
   }, []);
   return (
-    <TasksListContext.Provider value={{task, dispatch, filter, setFilter}}>
+    <TasksListContext.Provider value={{task, dispatch}}>
       {children}
     </TasksListContext.Provider>
   );

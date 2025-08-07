@@ -52,7 +52,7 @@ export default function ToDoForm() {
                border bg-black text-white rounded h-full
                p-[5px] pr-10 cursor-pointer
                focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
-          onChange={() => setTaskTheme}
+          onChange={(e) => setTaskTheme(e.target.value as TaskTheme)}
         >
           <option value="any">Усі</option>
           <option value="personal">Особисте</option>
